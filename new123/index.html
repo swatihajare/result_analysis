@@ -1,0 +1,64 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Result Entry</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; padding: 20px; }
+        input, select, button { margin: 10px; padding: 10px; width: 80%; max-width: 300px; }
+        .success { color: green; display: none; }
+    </style>
+</head>
+<body>
+
+    <h2>Enter Result Data</h2>
+    <form id="resultForm">
+        <select name="branch" required>
+            <option value="">Select Branch</option>
+            <option value="CSE">Computer Technology</option>
+            <option value="ECE">Electrical</option>
+            <option value="ME">Mechanical</option>
+        </select>
+
+        <select name="semester" required>
+            <option value="">Select Semester</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+        </select>
+
+        <input type="text" name="subject" placeholder="Subject Name" required>
+        <input type="number" name="max_marks" placeholder="Maximum Marks" required>
+        <input type="number" name="students" placeholder="Enrolled Students" required>
+
+        <button type="submit">Save</button>
+        <p class="success" id="successMessage">Data Saved Successfully!</p>
+    </form>
+
+    <script>
+        document.getElementById("resultForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            const formData = new FormData(this);
+
+            fetch("save_result.php", {
+                method: "POST",
+                body: formData
+            })
+            .then(response => response.text())
+            .then(data => {
+                if (data.trim() === "success") {
+                    document.getElementById("successMessage").style.display = "block";
+                    this.reset();
+                    setTimeout(() => document.getElementById("successMessage").style.display = "none", 2000);
+                } else {
+                    alert("Error: " + data);
+                }
+            })
+            .catch(error => console.error("Error:", error));
+        });
+    </script>
+
+</body>
+</html> -->

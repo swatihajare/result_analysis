@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Student Pass Percentage</title>
+<style>
+body {
+    font-family: sans-serif;
+    padding: 20px;
+}
+
+.container {
+    width: 600px; /* Adjust as needed */
+    margin: 0 auto;
+}
+
+.title {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+}
+
+.select-container {
+    margin-bottom: 40px; /* Increased margin for more space */
+}
+
+select {
+    padding: 5px;
+    font-size: 1em;
+    margin-top: 10px; /* Added margin for more space */
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+.odd-sem {
+    margin-bottom: 20px;
+}
+
+.even-sem {
+    margin-bottom: 20px;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+    <div class="title">% of Student Pass In Semester</div>
+
+    <!-- Branch Selection with Added Space -->
+    <div class="select-container">
+        <label>Select Branch:</label>
+        <select id="branch" name="branch" onchange="updatePassFailData()" required>
+            <option value="">Select Branch</option>
+            <option value="CSE">Computer Technology</option>
+            <option value="ECE">Electrical</option>
+            <option value="ME">Mechanical</option>
+            <option value="EJ">Electronics</option>
+            <option value="CE">Civil</option>
+        </select>
+    </div>
+
+    <!-- Odd Semester Table -->
+    <div class="odd-sem">
+        <table>
+            <thead>
+                <tr>
+                    <th>Odd Sem</th>
+                    <th>Pass %</th>
+                    <th>Fail %</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1st Sem</td>
+                    <td id="pass1"></td>
+                    <td id="fail1"></td>
+                </tr>
+                <tr>
+                    <td>3rd Sem</td>
+                    <td id="pass3"></td>
+                    <td id="fail3"></td>
+                </tr>
+                <tr>
+                    <td>5th Sem</td>
+                    <td id="pass5"></td>
+                    <td id="fail5"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Even Semester Table -->
+    <div class="even-sem">
+        <table>
+            <thead>
+                <tr>
+                    <th>Even Sem</th>
+                    <th>Pass %</th>
+                    <th>Fail %</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>2nd Sem</td>
+                    <td id="pass2"></td>
+                    <td id="fail2"></td>
+                </tr>
+                <tr>
+                    <td>4th Sem</td>
+                    <td id="pass4"></td>
+                    <td id="fail4"></td>
+                </tr>
+                <tr>
+                    <td>6th Sem</td>
+                    <td id="pass6"></td>
+                    <td id="fail6"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+function updatePassFailData() {
+    const branch = document.getElementById("branch").value;
+    if (!branch) return;
+
+    fetch(`fetch_pass_fail.php?branch=${branch}`)
+        .then(response => response.json())
+        .then(data => {
+            // Clear previous data
+            for (let i = 1; i <= 6; i++) {
+                document.getElementById(`pass${i}`).textContent = "";
+                document.getElementById(`fail${i}`).textContent = "";
+            }
+
+            // Update tables with new data
+            for (const semester in data) {
+                const passPercentage = data[semester].pass_percentage;
+                const failPercentage = data[semester].fail_percentage;
+
+                document.getElementById(`pass${semester}`).textContent = `${passPercentage}%`;
+                document.getElementById(`fail${semester}`).textContent = `${failPercentage}%`;
+            }
+        })
+        .catch(error => console.error("Error fetching data:", error));
+}
+</script>
+
+</body>
+</html>
